@@ -72,7 +72,22 @@ class AgentDB:
 
     def deactivate_agent(self, id: int) -> str:
         """Deactivates an agent."""
-        pass
+        if self.get_agent_by_id(id=id) is None:
+            return f"Failed to deactivate agent {id}. no such agent."
+
+        stmt = """
+        UPDATE `agents`
+        SET
+        `is_active` = FALSE
+        WHERE `id` = %s;
+        """
+
+        with self.db_con(dictionary = True) as cur:
+            cur.execute(stmt, (id,))
+            return \
+                f"Successfully deactivated agent {id}." \
+                if cur.rowcount > 0 else \
+                f"Failed to deactivate agent {id}."
 
     def increment_completed(self, id: int) -> str:
         """Increments the completed missions count
