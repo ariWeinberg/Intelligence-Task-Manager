@@ -17,7 +17,7 @@ class DBConnection:
         self.port = port or "3406"
         self.user = user or "root"
         self.password = password or "1234"
-        self.database = database or "Intelligence_db"
+        self.database = database or 'Intelligence_db'
 
     def get_connection(self) -> MySQLConnectionAbstract:
         """
@@ -40,7 +40,23 @@ class DBConnection:
         Note that this method uses its own connection to avoid trying to
             connect to a non-existant database.
         """
-        pass
+        connection = connect(host = self.host,
+                       port = self.port,
+                       user = self.user,
+                       password = self.password)
+
+        cur = connection.cursor()
+        print(self.database)
+
+        clean_database_name = (self.database if \
+                               self.database.count(';') == 0 else None) or \
+                                'Intelligence_db'
+        database_creation_stmt = f"CREATE DATABASE IF NOT EXISTS \
+            {clean_database_name};"
+        cur.execute(database_creation_stmt)
+
+        cur.close()
+        connection.close()
 
     def create_tables(self) -> None:
         """
