@@ -152,5 +152,5 @@ class AgentDB:
         """
 
         with self.db_con(dictionary = True) as cur:
-            cur.execute(stmt, (id,))
+            cur.execute(stmt)
             return cur.fetchone()["active_agents"]
