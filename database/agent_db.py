@@ -17,7 +17,23 @@ class AgentDB:
 
     def create_agent(self, data: AgentCreateModel) -> AgentViewModel:
         """Creates a new agent in the table (a new row)."""
-        pass
+        stmt = """
+        INSERT INTO `agents`
+        `name` = %s,
+        `specialty` = %s,
+        `agent_rank` = %s
+        """
+        values = (
+            data.agent_name,
+            data.agent_specialty,
+            data.agent_agent_rank
+        )
+        
+        with self.db_con() as cur:
+            cur.execute(stmt, values)
+            agent_id = cur.lastrowid
+
+        return self.get_agent_by_id(agent_id) 
 
     def get_all_agents(self) -> list[AgentViewModel]:
         """Returns a list of all agents."""
