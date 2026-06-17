@@ -21,7 +21,7 @@ class AgentDB:
         INSERT INTO `agents`
         `name` = %s,
         `specialty` = %s,
-        `agent_rank` = %s
+        `agent_rank` = %s;
         """
         values = (
             data.agent_name,
@@ -39,7 +39,7 @@ class AgentDB:
         """Returns a list of all agents."""
         stmt = """
         SELECT *
-        FROM `agents`
+        FROM `agents`;
         """
 
         result: list[AgentViewModel] = []
