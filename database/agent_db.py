@@ -57,7 +57,15 @@ class AgentDB:
 
     def get_agent_by_id(self, id: int) -> AgentViewModel | None:
         """Returns the agent with a matching id."""
-        pass
+        stmt = """
+        SELECT *
+        FROM `agents`
+        WHERE `id` = %s;
+        """
+
+        with self.db_con(dictionary = True) as cur:
+            cur.execute(stmt, (id,))
+            return cur.fetchone() or None
 
     def update_agent(self, id: int, data: AgentUpdateModel) -> str:
         """Applys the update data to the agent with a matching id."""
