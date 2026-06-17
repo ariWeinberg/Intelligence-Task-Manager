@@ -2,7 +2,7 @@ from typing import Literal
 from pydantic import BaseModel, Field, model_validator
 
 
-class AgentViewModel(BaseModel):
+class AgentUpdateModel(BaseModel):
     agent_name: str | None = Field(
             alias="name",
             max_length=50)
