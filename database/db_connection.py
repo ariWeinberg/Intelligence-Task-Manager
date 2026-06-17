@@ -12,7 +12,11 @@ class DBConnection:
                  database: str | None = None
                  ):
         """Initializes the manager, by setting its parameters."""
-        pass
+        self.host = host or "localhost"
+        self.port = port or "3406"
+        self.user = user or "root"
+        self.password = password or "1234"
+        self.database = database or "Intelligence_db"
 
     def get_connection(self) -> MySQLConnectionAbstract:
         """
