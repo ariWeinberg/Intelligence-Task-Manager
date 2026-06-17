@@ -66,7 +66,48 @@ class DBConnection:
 
         Caller MUST ensure the database exists.
         """
-        pass
+        self._create_agents_table()
+        self._create_missions_table()
+
+    def _create_agents_table(self):
+        """Creates the `agents` table needed for this app"""
+        connection = self.get_connection()
+        cur = connection.cursor()
+
+        agents_table_creation_stmt = """CREATE TABLE IF NOT EXISTS `agents` (
+        `id` INT AUTO_INCReMenT PRIMARY KEY,
+        `name` VARCHAR(50) NOT NULL,
+        `specialty` VARCHAR(50) NOT NULL,
+        `is_active` BOOLEAN DEFAULT TRUE,
+        `completed_missions` INT DEFAULT 0,
+        `failed_missions` INT DEFAULT 0,
+        `agent_rank` ENUM('Junior', 'Senior', 'Commander')
+        );
+        """
+        cur.execute(agents_table_creation_stmt)
+        cur.close()
+        connection.close()
+
+    def _create_missions_table(self):
+        """Creates the `missions` table needed for this app"""
+        connection = self.get_connection()
+        cur = connection.cursor()
+
+        missions_table_creation_stmt = """CREATE TABLE IF NOT EXISTS `missions` (
+        `id` INT AUTO_INCReMenT PRIMARY KEY,
+        `title` VARCHAR(50) NOT NULL,
+        `description` TEXT NOT NULL,
+        `location` VARCHAR(50) NOT NULL,
+        `difficulty` INT NOT NULL,
+        `importance` INT NOT NULL,
+        `status` VARCHAR(11) DEFAULT 'NEW',
+        `risk_level` VARCHAR(8),
+        `assigned_agent_id` INT DEFAULT NULL
+        );
+        """
+        cur.execute(missions_table_creation_stmt)
+        cur.close()
+        connection.close()
 
     @contextmanager
     def __call__(self, *args, **kwds):
