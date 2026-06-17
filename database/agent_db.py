@@ -13,7 +13,7 @@ class AgentDB:
         If a connection is provided it is used otherwise a new one is
             created with default settings.
         """
-        pass
+        self.db_con = connection_manager or DBConnection()
 
     def create_agent(self, data: AgentCreateModel) -> AgentViewModel:
         """Creates a new agent in the table (a new row)."""
