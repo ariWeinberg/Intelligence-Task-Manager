@@ -16,7 +16,7 @@ class AgentUpdateModel(BaseModel):
             ] | None = Field(
             alias="agent_rank")
 
-    @model_validator
+    @model_validator(mode='after')
     def validator(self):
         if any((
             self.agent_name,
