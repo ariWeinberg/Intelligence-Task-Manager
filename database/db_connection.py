@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 from mysql.connector.abstracts import MySQLConnectionAbstract
+from mysql.connector import connect
 
 
 class DBConnection:
@@ -26,7 +27,11 @@ class DBConnection:
 
         Caller MUST ensure the database exists.
         """
-        pass
+        return connect(host = self.host,
+                       port = self.port,
+                       user = self.user,
+                       password = self.password,
+                       database = self.database)
 
     def create_database(self) -> None:
         """
