@@ -6,7 +6,7 @@ from models.agent_view_model import AgentViewModel
 
 class AgentDB:
     """A class that acts as an interface to the agents table (DAL)."""
-    def __init__(self, connection_manager: DBConnection | None):
+    def __init__(self, connection_manager: DBConnection | None = None):
         """
         Initializes the interface and sets up a dbconnection for it.
 
