@@ -144,4 +144,13 @@ class AgentDB:
 
     def count_active_agents(self) -> int:
         """Returns a count of all existing agents."""
-        pass
+        stmt = """
+        SELECT COUNT(`is_active`) AS `active_agents`
+        FROM `agents`
+        GROUP BY `is_active`
+        HAVING `is_active` = TRUE
+        """
+
+        with self.db_con(dictionary = True) as cur:
+            cur.execute(stmt, (id,))
+            return cur.fetchone()["active_agents"]
