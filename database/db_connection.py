@@ -46,7 +46,6 @@ class DBConnection:
                        password = self.password)
 
         cur = connection.cursor()
-        print(self.database)
 
         clean_database_name = (self.database if \
                                self.database.count(';') == 0 else None) or \
