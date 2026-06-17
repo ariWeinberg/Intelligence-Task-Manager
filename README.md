@@ -185,3 +185,8 @@ docker run -d --name intelligence-mysql -e MYSQL_ROOT_PASSWORD=1234 \
 ```
 NOTE: that i used a port other than what was specified in th exam spesification beacause i have a local system (probably some system package) running on this port.
 if you want to use another port you are free to do so and to make the code use such a port you have to pass it to the DBConnection class on every instantiation.
+
+install all dependencies:
+```bash
+pip install -r ./requirements.txt
+```
