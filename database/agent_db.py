@@ -19,9 +19,8 @@ class AgentDB:
         """Creates a new agent in the table (a new row)."""
         stmt = """
         INSERT INTO `agents`
-        `name` = %s,
-        `specialty` = %s,
-        `agent_rank` = %s;
+        (`name`, `specialty`, `agent_rank`)
+        VALUES (%s, %s, %s);
         """
         values = (
             data.agent_name,
