@@ -119,4 +119,16 @@ class DBConnection:
 
         Ensures database creation.
         """
-        pass
+        self.create_database()
+        connection = self.get_connection()
+        cursor = connection.cursor()
+
+        try:
+            yield cursor
+            connection.commit()
+        except:
+            connection.rollback()
+            raise
+        finally:
+            cursor.close()
+            connection.close()
