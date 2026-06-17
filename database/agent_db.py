@@ -37,7 +37,23 @@ class AgentDB:
 
     def get_all_agents(self) -> list[AgentViewModel]:
         """Returns a list of all agents."""
-        pass
+        stmt = """
+        SELECT *
+        FROM `agents`
+        """
+
+        result: list[AgentViewModel] = []
+
+        with self.db_con(dictionary = True) as cur:
+            cur.execute(stmt)
+            for row in cur.fetchall():
+                try:
+                    agent = AgentViewModel(**row)
+                    result.append(agent)
+                except:
+                    pass
+
+        return result
 
     def get_agent_by_id(self, id: int) -> AgentViewModel | None:
         """Returns the agent with a matching id."""
