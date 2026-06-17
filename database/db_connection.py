@@ -121,7 +121,7 @@ class DBConnection:
         """
         self.create_database()
         connection = self.get_connection()
-        cursor = connection.cursor()
+        cursor = connection.cursor(*args, **kwds)
 
         try:
             yield cursor
