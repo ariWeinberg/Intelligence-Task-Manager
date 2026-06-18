@@ -68,7 +68,34 @@ class AgentDB:
 
     def update_agent(self, id: int, data: AgentUpdateModel) -> str:
         """Applys the update data to the agent with a matching id."""
-        pass
+        try:
+            stmt = f"""
+            UPDATE `agents`
+            SET
+            {"`name` = %s," if data.agent_name is not None else ""}
+            {"`specialty` = %s," if data.agent_specialty is not None else ""}
+            {"`agent_rank` = %s" if data.agent_agent_rank is not None else ""}
+            WHERE `id` = %s;
+            """
+
+            values = tuple()
+            if data.agent_name is not None:
+                values = (*values, data.agent_name)
+
+            if data.agent_specialty is not None:
+                values = (*values, data.agent_specialty)
+
+            if data.agent_agent_rank is not None:
+                values = (*values, data.agent_agent_rank)
+
+            values = (*values, id)
+            
+            with self.db_con() as cur:
+                cur.execute(stmt, values)
+
+            return f"successfully updated agent {id}."
+        except:
+            return f"failed to update agent {id}."
 
     def deactivate_agent(self, id: int) -> str:
         """Deactivates an agent."""
