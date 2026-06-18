@@ -22,7 +22,29 @@ class MissionDB:
         
         Returns the newly created mission's object (MissionView)
         """
-        pass
+        stmt = """
+        INSERT INTO `missions`
+        (`title`, `description`, `location`,
+        `difficulty`, `importance`, `status`,
+        `risk_level`, `assigned_agent_id`)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+        """
+        values = (
+            data.mission_title,
+            data.mission_description,
+            data.mission_location,
+            data.mission_difficulty,
+            data.mission_importance,
+            data.mission_status,
+            data.risk_level(),
+            data.mission_assigned_agent_id
+        )
+        
+        with self.db_con() as cur:
+            cur.execute(stmt, values)
+            mission_id = cur.lastrowid
+
+        return self.get_mission_by_id(mission_id) 
 
     def get_all_missions(self) -> list[MissionViewModel]:
         """Returns a list of all missions
