@@ -1,6 +1,5 @@
 from database.db_connection import DBConnection
 from models.agent_create_model import AgentCreateModel
-from models.agent_update_model import AgentUpdateModel
 from models.agent_view_model import AgentViewModel
 
 
@@ -66,36 +65,34 @@ class AgentDB:
             cur.execute(stmt, (id,))
             return cur.fetchone() or None
 
-    def update_agent(self, id: int, data: AgentUpdateModel) -> str:
+    def update_agent(self, id: int, data: AgentCreateModel) -> str:
         """Applys the update data to the agent with a matching id."""
-        try:
-            stmt = f"""
-            UPDATE `agents`
-            SET
-            {"`name` = %s," if data.agent_name is not None else ""}
-            {"`specialty` = %s," if data.agent_specialty is not None else ""}
-            {"`agent_rank` = %s" if data.agent_agent_rank is not None else ""}
-            WHERE `id` = %s;
-            """
+        stmt = """
+        UPDATE `agents`
+        SET
+        `name` = %s,
+        `specialty` = %s,
+        `is_active` = %s,
+        `completed_missions` = %s,
+        `failed_missions` = %s,
+        `agent_rank` = %s
+        WHERE `id` = %s;
+        """
+        values = (
+            data.agent_name,
+            data.agent_specialty,
+            data.agent_is_active,
+            data.agent_completed_missions,
+            data.agent_failed_missions,
+            data.agent_agent_rank,
+            id
+        )
+        
+        with self.db_con() as cur:
+            cur.execute(stmt, values)
+            agent_id = cur.lastrowid
 
-            values = tuple()
-            if data.agent_name is not None:
-                values = (*values, data.agent_name)
-
-            if data.agent_specialty is not None:
-                values = (*values, data.agent_specialty)
-
-            if data.agent_agent_rank is not None:
-                values = (*values, data.agent_agent_rank)
-
-            values = (*values, id)
-            
-            with self.db_con() as cur:
-                cur.execute(stmt, values)
-
-            return f"successfully updated agent {id}."
-        except:
-            return f"failed to update agent {id}."
+        return f"successfully updated agent {id}."
 
     def deactivate_agent(self, id: int) -> str:
         """Deactivates an agent."""
