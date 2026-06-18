@@ -1,6 +1,7 @@
 from tarfile import data_filter
 
 from fastapi import APIRouter, status, HTTPException
+from errors import MissionNotFoundError, NotAllowedError
 from models import AgentCreateModel, HTTPResponseModel
 from models.mission_create_model import MissionCreateModel
 from services import AgentService
@@ -50,22 +51,35 @@ def get_mission_by_id(id: int):
              status_code=status.HTTP_200_OK,
              response_model=HTTPResponseModel)
 def start_mission(id: int):
-    result = mission_service.start_mission(id=id)
+    try:
+        result = mission_service.start_mission(id=id)
+    except MissionNotFoundError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    except NotAllowedError:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+    message = 'success.'
+    return HTTPResponseModel(message=message, data=result)
 
-@router.put('/{id}/complete',
-             status_code=status.HTTP_200_OK,
-             response_model=HTTPResponseModel)
-def complete_mission(id: int):
-    result = mission_service.complete_mission(id=id)
+# @router.put('/{id}/complete',
+#              status_code=status.HTTP_200_OK,
+#              response_model=HTTPResponseModel)
+# def complete_mission(id: int):
+#     result = mission_service.complete_mission(id=id)
+#     message = 'success.'
+#     return HTTPResponseModel(message=message, data=result)
 
-@router.put('/{id}/fail',
-             status_code=status.HTTP_200_OK,
-             response_model=HTTPResponseModel)
-def fail_mission(id: int):
-    result = mission_service.fail_mission(id=id)
+# @router.put('/{id}/fail',
+#              status_code=status.HTTP_200_OK,
+#              response_model=HTTPResponseModel)
+# def fail_mission(id: int):
+#     result = mission_service.fail_mission(id=id)
+#     message = 'success.'
+#     return HTTPResponseModel(message=message, data=result)
 
-@router.put('/{id}/cancel',
-             status_code=status.HTTP_200_OK,
-             response_model=HTTPResponseModel)
-def cancel_mission(id: int):
-    result = mission_service.cancel_mission(id=id)
+# @router.put('/{id}/cancel',
+#              status_code=status.HTTP_200_OK,
+#              response_model=HTTPResponseModel)
+# def cancel_mission(id: int):
+#     result = mission_service.cancel_mission(id=id)
+#     message = 'success.'
+#     return HTTPResponseModel(message=message, data=result)

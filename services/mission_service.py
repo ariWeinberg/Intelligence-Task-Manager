@@ -61,7 +61,13 @@ class MissionService:
         pass
     
     def get_top_agent(self) -> AgentViewModel:
-        pass
+        mission = self.mission_db_layer.get_mission_by_id(id=id)
+        if mission is None:
+            raise MissionNotFoundError(m_id=id)
+        if mission.mission_status != 'ASSIGNED':
+            raise NotAllowedError()
+        
+        return self.update_mission_status(id=id, status='IN_PROGRESS')
 
     def start_mission(id: int) -> str | None:
         pass
