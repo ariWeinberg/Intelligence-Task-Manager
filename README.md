@@ -7,16 +7,26 @@ Intelligence Task Manager is a system designed for ShadowNet to manage their age
 
 ```plaintext
 Intelligence-Task-Manager/
+├── main.py
 ├── database/
 │   ├── db_connection.py
 │   ├── agent_db.py
 │   └── mission_db.py
+├── database/
+│   ├── agent_routes.py
+│   ├── mission_routes.py
+│   └── report_routes.py
 ├── models/
 │   ├── mission_create_model.py
 │   ├── mission_view_model.py
 │   ├── agent_create_model.py
 │   ├── agent_update_model.py
+│   ├── types.py
 │   └── agent_view_model.py
+├── .env
+├── .env.example
+├── logs/
+│   └── app.log
 ├── README.md
 ├── requirements.txt
 └── .gitignore
@@ -109,7 +119,7 @@ it has the following methods:
 
 ### MissionDB:
 
-`mission(data)` : creates a new mission and returns the newly created mission's object (MissionView)
+`create_mission(data)` : creates a new mission and returns the newly created mission's object (MissionView)
 
 `get_all_missions()` : returns a list of all missions or an empty list if no missions exist.
 
@@ -156,6 +166,42 @@ holding the data avilable for an agent.
 A pydantic model class.
 holding the data needed to update an agent (all optional but at least one field set, no id.)
 
+## Endpoints:
+
+### agent endpoints:
+1. POST /agents      - create a new agent.
+2. GET  /agents      - get all agents.
+3. GET  /agents/{id} - get an agent by it's id.
+4. PUT  /agents/{id} - update an agent's data.
+5. PUT  /agents/{id}/deactivate - deactivate (retire) an agent.
+6. GET  /agents/{id} - get the performance summary of this agent.
+
+### mission endpoints:
+1. POST /missions - create a new mission.
+2. GET /missions - get all missions.
+3. GET /missions/{id} - get a mission by it's id.
+4. PUT /missions/{id}/assign/{agent_id} - assign a mission to an agent.
+5. PUT /missions/{id}/start - start a mission (status = 'IN_PROGRESS').
+6. PUT /missions/{id}/complete - successful completion of the mission.
+7. PUT /missions/{id}/fail - failing completion of the mission.
+8. PUT /missions/{id}/cancel -  cancel the mission.
+
+
+### report endpoints:
+1. GET summary/reports/ - get a summary of the system's status in the folowing format:
+```json
+{
+"active_agents_count": 0,
+"total_missions": 0,
+"open_missions": 0,
+"completed_missions": 0,
+"failed_missions": 0,
+"critical_missions": 0
+}
+```
+2. GET /reports/missions-by-status - get a count of how many missions are under each status.
+3. GET /reports/top-agent - get the agent who completed the most missions.
+
 ## system rules:
 
 1. **valid ranks** - a rank field can only contain one of the folowing values ('Junior', 'Senior', 'Commander'). any other value raises an error.
@@ -190,3 +236,17 @@ install all dependencies:
 ```bash
 pip install -r ./requirements.txt
 ```
+
+start the server:
+on linux (ubuntu):
+```bash
+python3 ./main.py
+```
+on windows:
+```bash
+py ./main.py
+```
+
+#### note:
+if you want to override the default port, host, or db settings you can do so by setting them in the .env file.  
+see .env.example file for an example.
