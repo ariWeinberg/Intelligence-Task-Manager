@@ -12,6 +12,9 @@ Intelligence-Task-Manager/
 │   ├── db_connection.py
 │   ├── agent_db.py
 │   └── mission_db.py
+├── services/
+│   ├── agent_service.py
+│   └── mission_service.py
 ├── database/
 │   ├── agent_routes.py
 │   ├── mission_routes.py
@@ -214,6 +217,13 @@ holding the data needed to update an agent (all optional but at least one field 
 8. **mission execution rule** - you can only start a mission if it is in the 'ASSIGNED' status, doing so means changing its status to 'IN_PROGRESS'.
 9. **mission completion rule** - you can only complete a mission if its status is 'IN_PROGRESS' after doing so status changes to either 'COMPLETED' or 'FAILED'. 
 10. **mission cancelation rule** - you can only cancle a mission if its status is either 'NEW' or 'ASSIGNED', doing so means changing the status to 'CANCELLED'.
+## System Flow:
+### all operations within this system folow a similar path:
+- user spesifies an operation possibly supllying needed data.
+- system logs route entrence and passes it to a service for validation and execution.
+- service validates the request and data.
+- service logs and executes the operation.
+- routes validate the rsult log and return appropriate message / error.
 
 ## How to run:
 first clone this repo:
