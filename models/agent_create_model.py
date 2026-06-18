@@ -1,5 +1,5 @@
-from typing import Literal
 from pydantic import BaseModel, Field
+from models.types import AgentRank
 
 
 class AgentCreateModel(BaseModel):
@@ -8,5 +8,5 @@ class AgentCreateModel(BaseModel):
     agent_is_active: bool = Field(alias="is_active", default=True)
     agent_completed_missions: int = Field(alias="completed_missions", default=0)
     agent_failed_missions: int = Field(alias="failed_missions", default=0)
-    agent_agent_rank: Literal['Junior', 'Senior', 'Commander'] = Field(alias="agent_rank")
+    agent_agent_rank: AgentRank = Field(alias="agent_rank")
 
