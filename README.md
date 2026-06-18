@@ -177,7 +177,7 @@ holding the data needed to update an agent (all optional but at least one field 
 3. GET  /agents/{id} - get an agent by it's id.
 4. PUT  /agents/{id} - update an agent's data.
 5. PUT  /agents/{id}/deactivate - deactivate (retire) an agent.
-6. GET  /agents/{id} - get the performance summary of this agent.
+6. GET  /agents/{id}/performance - get the performance summary of this agent.
 
 ### mission endpoints:
 1. POST /missions - create a new mission.

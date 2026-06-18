@@ -96,9 +96,6 @@ class AgentDB:
 
     def deactivate_agent(self, id: int) -> str:
         """Deactivates an agent."""
-        if self.get_agent_by_id(id=id) is None:
-            return f"Failed to deactivate agent {id}. no such agent."
-
         stmt = """
         UPDATE `agents`
         SET
@@ -108,17 +105,11 @@ class AgentDB:
 
         with self.db_con(dictionary = True) as cur:
             cur.execute(stmt, (id,))
-            return \
-                f"Successfully deactivated agent {id}." \
-                if cur.rowcount > 0 else \
-                f"Failed to deactivate agent {id}."
+        return f"Successfully deactivated agent {id}."
 
     def increment_completed(self, id: int) -> str:
         """Increments the completed missions count
             of the agent with a matching id."""
-        if self.get_agent_by_id(id=id) is None:
-            return f"Failed to update completed missions for agent {id}. no such agent."
-
         stmt = """
         UPDATE `agents`
         SET
@@ -128,17 +119,11 @@ class AgentDB:
 
         with self.db_con(dictionary = True) as cur:
             cur.execute(stmt, (id,))
-            return \
-                f"Successfully update completed missions for agent {id}." \
-                if cur.rowcount > 0 else \
-                f"Failed to update completed missions for agent {id}."
+            return f"Successfully update completed missions for agent {id}."
 
     def increment_failed(self, id: int) -> str:
         """Increments the failed missions count
             of the agent with a matching id."""
-        if self.get_agent_by_id(id=id) is None:
-            return f"Failed to update failed missions for agent {id}. no such agent."
-
         stmt = """
         UPDATE `agents`
         SET
@@ -148,11 +133,8 @@ class AgentDB:
 
         with self.db_con(dictionary = True) as cur:
             cur.execute(stmt, (id,))
-            return \
-                f"Successfully update failed missions for agent {id}." \
-                if cur.rowcount > 0 else \
-                f"Failed to update failed missions for agent {id}."
-
+            return f"Successfully update failed missions for agent {id}."
+        
     def get_agent_performance(self, id: int) -> dict[str, int]:
         """
         Calculates and returns  a summary of the agents performance. 
