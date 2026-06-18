@@ -47,18 +47,18 @@ def get_mission_by_id(id: int):
 #     return HTTPResponseModel(message=message, data=result)
 
 
-@router.put('/{id}/start',
-             status_code=status.HTTP_200_OK,
-             response_model=HTTPResponseModel)
-def start_mission(id: int):
-    try:
-        result = mission_service.start_mission(id=id)
-    except MissionNotFoundError:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    except NotAllowedError:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
-    message = 'success.'
-    return HTTPResponseModel(message=message, data=result)
+# @router.put('/{id}/start',
+#              status_code=status.HTTP_200_OK,
+#              response_model=HTTPResponseModel)
+# def start_mission(id: int):
+#     try:
+#         result = mission_service.start_mission(id=id)
+#     except MissionNotFoundError:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+#     except NotAllowedError:
+#         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+#     message = 'success.'
+#     return HTTPResponseModel(message=message, data=result)
 
 # @router.put('/{id}/complete',
 #              status_code=status.HTTP_200_OK,
