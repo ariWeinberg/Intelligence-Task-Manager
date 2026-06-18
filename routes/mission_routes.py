@@ -37,11 +37,14 @@ def get_mission_by_id(id: int):
     message = 'success fetching mission.'
     return HTTPResponseModel(message=message, data=result)
 
-@router.put('/{id}/assign/{agent_id}',
-             status_code=status.HTTP_200_OK,
-             response_model=HTTPResponseModel)
-def assign_mission_to_agent(id: int, agent_id: int):
-    result = mission_service.assign_mission(m_id=id, a_id=agent_id)
+# @router.put('/{id}/assign/{agent_id}',
+#              status_code=status.HTTP_200_OK,
+#              response_model=HTTPResponseModel)
+# def assign_mission_to_agent(id: int, agent_id: int):
+#     result = mission_service.assign_mission(m_id=id, a_id=agent_id)
+#     message = 'success assigning mission.'
+#     return HTTPResponseModel(message=message, data=result)
+
 
 @router.put('/{id}/start',
              status_code=status.HTTP_200_OK,

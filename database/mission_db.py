@@ -77,7 +77,7 @@ class MissionDB:
 
         with self.db_con(dictionary = True) as cur:
             cur.execute(stmt, (id,))
-            return cur.fetchone() or None
+            return MissionViewModel(**cur.fetchone()) or None
     
     def assign_mission(self, m_id: int, a_id: int) -> str:
         """Assigns a mission to an agent,
