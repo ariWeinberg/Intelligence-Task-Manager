@@ -63,7 +63,7 @@ class AgentDB:
 
         with self.db_con(dictionary = True) as cur:
             cur.execute(stmt, (id,))
-            return cur.fetchone() or None
+            return AgentViewModel(**cur.fetchone()) or None
 
     def update_agent(self, id: int, data: AgentCreateModel) -> str:
         """Applys the update data to the agent with a matching id."""
