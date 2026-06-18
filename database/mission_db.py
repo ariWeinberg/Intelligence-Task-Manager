@@ -65,7 +65,7 @@ class MissionDB:
 
         return result
     
-    def get_mission_by_id(self, id: int) -> MissionViewModel:
+    def get_mission_by_id(self, id: int) -> MissionViewModel | None:
         """Returns a spesific mission's object
         by its id. or None if it doesn't exist.
         """

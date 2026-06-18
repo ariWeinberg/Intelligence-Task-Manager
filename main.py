@@ -4,12 +4,14 @@ from mysql.connector import DatabaseError, ProgrammingError
 import uvicorn
 from models.HTTP_response_model import HTTPResponseModel
 from routes.agent_routes import router as agent_router
+from routes.mission_routes import router as mission_router
 
 
 app = FastAPI()
 
 
 app.include_router(agent_router, prefix="/agents")
+app.include_router(mission_router, prefix="/missions")
 
 
 def route_exception_handller(r: Request, e: Exception):
