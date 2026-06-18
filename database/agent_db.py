@@ -139,8 +139,38 @@ class AgentDB:
             "completed":0, the total amount of missions completed by this agent.
             "success_rate":0 the success rate for this agent.
         }
+        Note that an agent with no missions at all has a 0 success rate!
         """
-        pass
+        stmt = """
+        with j AS (
+            SELECT 
+                missions.id AS `m_id`,
+                agents.id as `a_id`,
+                agents.completed_missions,
+                agents.failed_missions
+            FROM `agents`
+            RIGHT JOIN `missions` ON
+                missions.assigned_agent_id  = agents.id)
+            Select
+            COUNT(*) AS `total`,
+            `completed_missions` as `completed`,
+            `failed_missions` AS `failed`
+            FROM `j`
+            GROUP BY `a_id`
+            HAVING `a_id` = %s
+            LIMIT 1;
+        """
+        with self.db_con(dictionary = True) as cur:
+            cur.execute(stmt, (id,))
+            result = cur.fetchone() or {}
+        result["failed"] = result.get("failed", 0)
+        result["total"] = result.get("total", 0)
+        result["completed"] = result.get("completed", 0)
+        if result["total"] > 0:
+            result["success_rate"] = (100 / result["total"]) * result["completed"]
+        else:
+            result["success_rate"] = 0
+        return result
 
     def count_active_agents(self) -> int:
         """Returns a count of all existing agents."""
